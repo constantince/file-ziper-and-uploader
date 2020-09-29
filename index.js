@@ -14,14 +14,15 @@ class FileZiperAndUploader {
         token: options.token || '',
         url: options.url || 'http://localhost:8080/upload',
         js: 'http://www.baidu.com',
-        target: options.target || /\.map$/
+        target: options.target || /\.map$/,
+        folderName: options.folderName
       };
     }
 
     apply(compiler) {
 
         compiler.hooks.emit.tapAsync('FileZiperAndUploader', (compilation, callback) => {
-            const folder = zip.folder(this.options.zipName)
+            const folder = zip.folder(this.options.folderName)
             for( let filename in compilation.assets ) {
                 if(this.options.target.test(filename)) {
                     const source = compilation.assets[filename].source();
