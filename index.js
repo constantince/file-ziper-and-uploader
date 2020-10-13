@@ -24,9 +24,9 @@ class FileZiperAndUploader {
 
     createFolder = (compilation, opt, prev) => {
         // 在压缩任务中移除前一个任务文档
-        if(prev) zip.remove(prev.folderName);
+        if(prev) zip.remove();
         //添加下一个压缩任务文档
-        const folder = zip.folder(opt.folderName)
+        const folder = zip.folder()
         for( let filename in compilation.assets ) {
             if( opt.target === 'all' || opt.target.test(filename) ) {
                 const source = compilation.assets[filename].source();
