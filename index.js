@@ -22,13 +22,12 @@ class FileZiperAndUploader {
       }
     }
 
-    createFolder = (compilation, opt, prev) => {
-        // 在压缩任务中移除前一个任务文档
-        if(prev) zip.remove();
+    createFolder = (compilation, opt, totalZipName = []) => {
         //添加下一个压缩任务文档
         const folder = zip.folder()
         for( let filename in compilation.assets ) {
-            if( opt.target === 'all' || opt.target.test(filename) ) {
+            //多任务压缩包不能互相包含
+            if( (opt.target === 'all' || opt.target.test(filename)) && totalZipName.indexOf(filename) === -1) {
                 const source = compilation.assets[filename].source();
                 folder.file(filename, source);
             }
@@ -55,8 +54,9 @@ class FileZiperAndUploader {
 
         //异步资源生成钩子
         compiler.hooks.emit.tapAsync('FileZiperAndUploader', async (compilation, callback) => {
+            const totalZipName = this.task.map(v => v.zipName);
             for(let i=0; i<this.task.length; i++) {
-                await this.createFolder(compilation, this.task[i], this.task[i - 1]);
+                await this.createFolder(compilation, this.task[i], totalZipName);
             }
 
             callback();
