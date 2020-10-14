@@ -20,16 +20,14 @@ Add plugin to your webpack.config.js. Using code below to send a zip package to 
                 url: 'localhost:8081', //* your target address service to receive zip
                 token: '',// your service auth string decided by your service code.
                 zipName: 'puppy.zip', // zip name
-                target: 'all', // regular expression or 'all' to filter files to zip
-                folderName: 'puppy' // zip floader name
+                target: 'all' // regular expression or 'all' to filter files to zip
             },
             //task two: just ziping files with suffix .min.js and sending them to localhost:8082
             {
                 url: 'http://localhost:8082'
                 token: '',
                 zipName: 'monitor.min.zip',
-                target: /\.min\.js$/,
-                folderName: 'monitor'
+                target: /\.min\.js$/
             }
             
     ])
