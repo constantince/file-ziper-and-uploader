@@ -102,10 +102,10 @@ class FileZiperAndUploader {
     zipEntireFolder(compilation, opt = []) {
         const zip = new jsZip();
         return new Promise((reslove) => {
-            var currPath = compilation.options.output.path.replace(/\\/g, '/');//文件的绝对路径 当前当前js所在的绝对路径
+            var currPath = compilation.options.output.path;//文件的绝对路径 当前当前js所在的绝对路径
             find.file(currPath, file => {
                 file.forEach( _fileName => {
-                    const _fn = _fileName.replace(/\\/g, '/').replace(new RegExp(currPath), '');
+                    const _fn = path.relative(currPath, _fileName).replace(/\\/g, '/');
                     if(!/\.zip/.test(_fn))
                         zip.file(_fn, fs.readFileSync(_fileName));//压缩目录添加文件
                 });
