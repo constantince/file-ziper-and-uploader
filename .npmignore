@@ -1,0 +1,13 @@
+.gitignore
+
+test/
+
+rollup.config.js
+
+tsconfig.json
+
+.eslintrc.js
+
+*.ts
+
+types/
