@@ -7,7 +7,7 @@ import remove from 'rimraf';
 import find from 'find';
 import { Task, SingleObject, FileZiperAndUploaderType, Comp } from './types/index';
 
-class FileZiperAndUploader implements FileZiperAndUploaderType {
+export class FileZiperAndUploader implements FileZiperAndUploaderType {
     task: Task;
     compilerList: Task
     allList: Task
@@ -158,5 +158,3 @@ class FileZiperAndUploader implements FileZiperAndUploaderType {
         })
     }
 }
-
-export default FileZiperAndUploader;

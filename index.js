@@ -1,3 +1,4 @@
+"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -45,18 +46,23 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import fs from 'fs';
-import path from 'path';
-import request from 'request';
-import { RawSource } from 'webpack-sources';
-import jsZip from 'jszip';
-import remove from 'rimraf';
-import find from 'find';
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.FileZiperAndUploader = void 0;
+var fs_1 = __importDefault(require("fs"));
+var path_1 = __importDefault(require("path"));
+var request_1 = __importDefault(require("request"));
+var webpack_sources_1 = require("webpack-sources");
+var jszip_1 = __importDefault(require("jszip"));
+var rimraf_1 = __importDefault(require("rimraf"));
+var find_1 = __importDefault(require("find"));
 var FileZiperAndUploader = /** @class */ (function () {
     function FileZiperAndUploader(options) {
         this.createFolder = function (compilation, opt, totalZipName) {
             //添加下一个压缩任务文档
-            var zip = new jsZip();
+            var zip = new jszip_1.default();
             var folder = zip.folder('');
             for (var filename in compilation.assets) {
                 //多任务压缩包不能互相包含
@@ -69,11 +75,11 @@ var FileZiperAndUploader = /** @class */ (function () {
             //开始压缩任务
             return new Promise(function (resolve, reject) {
                 zip.generateAsync({ type: "nodebuffer" }).then(function (content) {
-                    var outputpath = path.join(compilation.options.output.path, opt.zipName);
+                    var outputpath = path_1.default.join(compilation.options.output.path, opt.zipName);
                     //相对路径转换
-                    var relativePath = path.relative(compilation.options.output.path, outputpath);
+                    var relativePath = path_1.default.relative(compilation.options.output.path, outputpath);
                     //资源写入
-                    compilation.assets[relativePath] = new RawSource(content);
+                    compilation.assets[relativePath] = new webpack_sources_1.RawSource(content);
                     //抛出结束任务
                     resolve('done');
                 });
@@ -139,7 +145,7 @@ var FileZiperAndUploader = /** @class */ (function () {
                         _a.sent();
                         //添加任务队列
                         for (i = 0; i < this.task.length; i++) {
-                            zPath = path.join(compilation.options.output.path, this.task[i].zipName);
+                            zPath = path_1.default.join(compilation.options.output.path, this.task[i].zipName);
                             allFetch.push(this.send(zPath, this.task[i]));
                         }
                         // //开始多任务处理请求
@@ -154,7 +160,7 @@ var FileZiperAndUploader = /** @class */ (function () {
                                                     case 0: 
                                                     //请求成功后删除zip包
                                                     return [4 /*yield*/, new Promise(function (resolve) {
-                                                            remove(res[i], function () {
+                                                            rimraf_1.default(res[i], function () {
                                                                 resolve('done');
                                                                 console.log('zip file sent and removed');
                                                             });
@@ -192,14 +198,14 @@ var FileZiperAndUploader = /** @class */ (function () {
     };
     //压缩整个打包文件 all时调用
     FileZiperAndUploader.prototype.zipEntireFolder = function (compilation, opt) {
-        var zip = new jsZip();
+        var zip = new jszip_1.default();
         return new Promise(function (reslove) {
             var currPath = compilation.options.output.path; //文件的绝对路径 当前当前js所在的绝对路径
-            find.file(currPath, function (file) {
+            find_1.default.file(currPath, function (file) {
                 file.forEach(function (_fileName) {
-                    var _fn = path.relative(currPath, _fileName).replace(/\\/g, '/');
+                    var _fn = path_1.default.relative(currPath, _fileName).replace(/\\/g, '/');
                     if (!/\.zip/.test(_fn))
-                        zip.file(_fn, fs.readFileSync(_fileName)); //压缩目录添加文件
+                        zip.file(_fn, fs_1.default.readFileSync(_fileName)); //压缩目录添加文件
                 });
                 zip.generateAsync({
                     type: "nodebuffer",
@@ -210,7 +216,7 @@ var FileZiperAndUploader = /** @class */ (function () {
                 }).then(function (content) {
                     if (Array.isArray(opt)) {
                         opt.forEach(function (v) {
-                            fs.writeFileSync(currPath + "/" + v.zipName, content, "utf-8"); //将打包的内容写入 当前目录下的 result.zip中
+                            fs_1.default.writeFileSync(currPath + "/" + v.zipName, content, "utf-8"); //将打包的内容写入 当前目录下的 result.zip中
                         });
                     }
                     reslove('done');
@@ -221,12 +227,12 @@ var FileZiperAndUploader = /** @class */ (function () {
     FileZiperAndUploader.prototype.send = function (zipPath, opt) {
         //发送压缩后的资源包到指定的服务器
         return new Promise(function (reslove) {
-            request.post(opt.url, {
+            request_1.default.post(opt.url, {
                 formData: {
                     token: opt.token,
                     description: 'Sent on ' + new Date(),
                     is_public: 1,
-                    sqlfiles: fs.createReadStream(zipPath)
+                    sqlfiles: fs_1.default.createReadStream(zipPath)
                 },
                 json: true,
             }, function (err) {
@@ -241,4 +247,4 @@ var FileZiperAndUploader = /** @class */ (function () {
     };
     return FileZiperAndUploader;
 }());
-export default FileZiperAndUploader;
+exports.FileZiperAndUploader = FileZiperAndUploader;

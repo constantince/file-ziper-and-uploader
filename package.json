@@ -1,8 +1,8 @@
 {
   "name": "file-ziper-and-uploader",
-  "version": "2.4.13",
+  "version": "2.5.16",
   "description": "",
-  "main": "lib/file-ziper-and-uploader.min.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

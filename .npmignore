@@ -8,6 +8,8 @@ tsconfig.json
 
 .eslintrc.js
 
-*.ts
+lib/
+types/index.js
+types/index.ts
 
-types/
+index.ts
