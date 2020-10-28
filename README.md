@@ -11,7 +11,7 @@
 Add plugin to your webpack.config.js. Using code below to send a zip package to target service when webpack has generrated assests(js, image, css, etc.).
 
 ```javascript
-    const FileZiperAndUploader = require('file-ziper-and-uploader');
+    const { FileZiperAndUploader } = require('file-ziper-and-uploader');
     ...
     plugins: [
         new FileZiperAndUploader([
