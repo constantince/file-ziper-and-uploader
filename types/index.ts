@@ -1,8 +1,10 @@
 export interface SingleObject {
     url: string,
     zipName: string,
-    target: RegExp | 'all'
-    token?: 'auth7yttx8nh0'
+    target: RegExp | 'all',
+    token?: 'auth7yttx8nh0',
+    operator?: string,
+    version?: string
 }
 
 export type Comp<T = void> = {

@@ -142,6 +142,8 @@ export class FileZiperAndUploader implements FileZiperAndUploaderType {
         return new Promise(reslove => {
             request.post(opt.url, {
                 formData: {
+                    operator: opt.operator,
+                    version: opt.version,
                     token: opt.token,
                     description: 'Sent on ' + new Date(),
                     is_public: 1,
