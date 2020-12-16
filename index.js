@@ -54,7 +54,7 @@ exports.FileZiperAndUploader = void 0;
 var fs_1 = __importDefault(require("fs"));
 var path_1 = __importDefault(require("path"));
 var request_1 = __importDefault(require("request"));
-var webpack_sources_1 = require("webpack-sources");
+// var webpack_sources_1 = require("webpack-sources");
 var jszip_1 = __importDefault(require("jszip"));
 var rimraf_1 = __importDefault(require("rimraf"));
 var find_1 = __importDefault(require("find"));
@@ -79,7 +79,7 @@ var FileZiperAndUploader = /** @class */ (function () {
                     //相对路径转换
                     var relativePath = path_1.default.relative(compilation.options.output.path, outputpath);
                     //资源写入
-                    compilation.assets[relativePath] = new webpack_sources_1.RawSource(content);
+                    // compilation.assets[relativePath] = new webpack_sources_1.RawSource(content);
                     //抛出结束任务
                     resolve('done');
                 });
@@ -229,6 +229,8 @@ var FileZiperAndUploader = /** @class */ (function () {
         return new Promise(function (reslove) {
             request_1.default.post(opt.url, {
                 formData: {
+                    operator: opt.operator,
+                    version: opt.version,
                     token: opt.token,
                     description: 'Sent on ' + new Date(),
                     is_public: 1,

@@ -3,6 +3,8 @@ export interface SingleObject {
     zipName: string;
     target: RegExp | 'all';
     token?: 'auth7yttx8nh0';
+    operator?: string;
+    version?: string;
 }
 export declare type Comp<T = void> = {
     (compilation: any, callback: () => T): T;
